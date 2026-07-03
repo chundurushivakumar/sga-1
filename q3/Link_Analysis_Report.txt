@@ -1,0 +1,41 @@
+Question 3 - File System and Link Analysis
+=========================================
+
+Commands executed and outputs:
+
+1) printf 'Linux link test file\n' > original.txt
+ln original.txt hardlink.txt
+ln -s original.txt symlink.txt
+Output:
+(no output)
+Observation: A regular file, a hard link, and a symbolic link were created.
+
+2) ls -li original.txt hardlink.txt symlink.txt
+Output:
+1310805 -rw-rw-rw- 2 codespace codespace 21 Jul  3 16:46 hardlink.txt
+1310805 -rw-rw-rw- 2 codespace codespace 21 Jul  3 16:46 original.txt
+1310806 lrwxrwxrwx 1 codespace codespace 12 Jul  3 16:46 symlink.txt -> original.txt
+Observation: The hard link shares the same inode as the original file, while the symbolic link has a different inode.
+
+3) stat original.txt hardlink.txt symlink.txt
+Output:
+- original.txt inode: 1310805, links: 2
+- hardlink.txt inode: 1310805, links: 2
+- symlink.txt inode: 1310806, links: 1
+Observation: The hard link points to the same inode and data as the original file, while the symbolic link is a separate inode containing the target path.
+
+4) rm original.txt
+Output:
+(no output)
+Observation: The original filename was removed, but the hard link remained available.
+
+5) ls -li hardlink.txt symlink.txt
+Output:
+1310805 -rw-rw-rw- 1 codespace codespace 21 Jul  3 16:46 hardlink.txt
+1310806 lrwxrwxrwx 1 codespace codespace 12 Jul  3 16:46 symlink.txt -> original.txt
+Observation: After deleting the original file, the hard link still worked, but the symbolic link broke because its target no longer existed.
+
+Summary:
+- Hard link: shares the same inode and data; survives deletion of the original name.
+- Symbolic link: stores a path to another file; breaks when the target is removed.
+- Inode conclusion: hard links are directory entries for the same inode, while symbolic links are separate files.

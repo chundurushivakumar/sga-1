@@ -1,0 +1,57 @@
+Question 2 - Secure Project Workspace Setup
+=========================================
+
+Commands executed and outputs:
+
+1) mkdir -p secure_workspace/docs secure_workspace/src secure_workspace/logs
+Output:
+(no output)
+Observation: The requested secure project structure was created.
+
+2) printf 'Project plan\n' > secure_workspace/docs/plan.txt
+printf 'Application config\n' > secure_workspace/src/app.txt
+printf 'Activity log entry\n' > secure_workspace/logs/activity.log
+Output:
+(no output)
+Observation: The example project files were created inside the workspace.
+
+3) find secure_workspace -maxdepth 3 -print | sort
+Output:
+secure_workspace
+secure_workspace/docs
+secure_workspace/docs/plan.txt
+secure_workspace/logs
+secure_workspace/logs/activity.log
+secure_workspace/src
+secure_workspace/src/app.txt
+Observation: The final directory structure contains docs, src, and logs folders with project files.
+
+4) chmod 750 secure_workspace secure_workspace/docs secure_workspace/src secure_workspace/logs
+chmod 640 secure_workspace/docs/plan.txt secure_workspace/src/app.txt secure_workspace/logs/activity.log
+Output:
+(no output)
+Observation: Directory permissions were tightened to 750, while files were restricted to 640.
+
+5) stat -c '%n %a %U:%G' ...
+Output:
+secure_workspace 750 codespace:codespace
+secure_workspace/docs 750 codespace:codespace
+secure_workspace/src 750 codespace:codespace
+secure_workspace/logs 750 codespace:codespace
+secure_workspace/docs/plan.txt 640 codespace:codespace
+secure_workspace/src/app.txt 640 codespace:codespace
+secure_workspace/logs/activity.log 640 codespace:codespace
+Observation: The directories are owner-readable/writable/executable for the owner, while files are readable by the owner and group only.
+
+6) umask
+Output:
+0022
+Observation: The umask value is 022, which is the default mask that prevents group and others from writing new files.
+
+Summary:
+- Directory structure created: secure_workspace/docs, secure_workspace/src, secure_workspace/logs
+- Permissions before modification: default 777 for directories and 666 for files
+- Permissions after modification: directories 750, files 640
+- Ownership: codespace:codespace
+- Umask used: 0022
+- Security explanation: The 750 permission on directories limits access to the owner and group, while 640 on files protects sensitive content from wider access.

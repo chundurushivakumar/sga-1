@@ -1,0 +1,45 @@
+Question 4 - File Access and I/O Investigation
+============================================
+
+Commands executed and outputs:
+
+1) printf 'sample log line\n' > app.txt
+Output:
+(no output)
+Observation: A sample file was created for file descriptor and I/O testing.
+
+2) exec 3<app.txt
+ls -l /proc/$$/fd | grep -E '3|0|1|2|6'
+Output:
+total 0
+lrwx------ 1 codespace codespace 64 Jul  3 16:45 0 -> /dev/pts/5
+lrwx------ 1 codespace codespace 64 Jul  3 16:45 1 -> /dev/pts/5
+lrwx------ 1 codespace codespace 64 Jul  3 16:45 2 -> /dev/pts/5
+lrwx------ 1 codespace codespace 64 Jul  3 16:45 255 -> /dev/pts/5
+lr-x------ 1 codespace codespace 64 Jul  3 16:45 3 -> /workspaces/sga-1/q4/app.txt
+l-wx------ 1 codespace codespace 64 Jul  3 16:45 6 -> /dev/null
+Observation: Linux opened the file on file descriptor 3, while standard streams stayed connected to the terminal and /dev/null.
+
+3) ls -l > stdout.txt
+ls /not_a_real_path 2> stderr.txt
+Output:
+(no output)
+Observation: Standard output was redirected to stdout.txt and standard error to stderr.txt.
+
+4) (ls -l && ls /not_a_real_path) > combined.txt 2>&1
+Output:
+(no output)
+Observation: Both standard output and standard error were combined into combined.txt.
+
+5) ulimit -a
+Output:
+open files                          (-n) 524288
+stack size                  (kbytes, -s) 8192
+pipe size                (512 bytes, -p) 8
+Observation: The shell has a large open-file limit and standard resource limits.
+
+Summary:
+- Open files were observed using /proc/$$/fd and file descriptor 3 was associated with app.txt.
+- Output redirection to stdout.txt and error redirection to stderr.txt were verified.
+- Combined redirection confirmed that both streams can be merged into one file.
+- Resource limits show that the shell can handle a large number of open files.

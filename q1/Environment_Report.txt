@@ -1,0 +1,49 @@
+Question 1 - Environment Verification
+=================================
+
+Commands executed and outputs:
+
+1) whoami
+Output:
+codespace
+Observation: The active Linux user account is codespace.
+
+2) groups
+Output:
+codespace pipx python oryx golang docker sdkman rvm php conda nvs nvm hugo ssh
+Observation: The user belongs to multiple supplementary groups used for development tools and services.
+
+3) echo "$SHELL"
+Output:
+/bin/bash
+Observation: The current login shell is /bin/bash.
+
+4) pwd
+Output:
+/workspaces/sga-1
+Observation: The current working directory is the repository root.
+
+5) ls -la
+Output:
+total 36
+drwxrwxrwx+ 8 codespace root      4096 Jul  3 16:16 .
+drwxrwxrwx+ 5 codespace root      4096 Jul  3 15:41 ..
+drwxrwxrwx+ 8 codespace root      4096 Jul  3 16:42 .git
+-rw-rw-rw-  1 codespace root         7 Jul  3 15:40 README.md
+drwxrwxrwx+ 2 codespace codespace 4096 Jul  3 16:16 q1
+drwxrwxrwx+ 3 codespace codespace 4096 Jul  3 16:23 q2
+drwxrwxrwx+ 2 codespace codespace 4096 Jul  3 16:29 q3
+drwxrwxrwx+ 2 codespace codespace 4096 Jul  3 16:33 q4
+drwxrwxrwx+ 2 codespace codespace 4096 Jul  3 16:16 q5
+Observation: The workspace contains the repository folders and the expected lab directories.
+
+6) curl -s --max-time 10 https://youtube.com > /dev/null && echo reachable
+Output:
+reachable
+Observation: Network connectivity to youtube.com was successful within the timeout.
+
+Summary:
+- Username: codespace
+- Current shell: /bin/bash
+- Working directory: /workspaces/sga-1
+- Network connectivity: reachable
